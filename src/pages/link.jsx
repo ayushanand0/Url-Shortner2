@@ -1,4 +1,4 @@
-import Device from "@/components/device-stats";
+import DeviceStats from "@/components/device-stats";
 import Location from "@/components/location-stats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,11 +11,10 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BarLoader, BeatLoader } from "react-spinners";
 
-const Link = () => {
-
+const LinkPage = () => {
   const downloadImage = () => {
     const imageUrl = url?.qr;
-    const fileName = url?.title; // Desired file name for the downloaded image
+    const fileName = url?.title;
 
     // Create an anchor element
     const anchor = document.createElement("a");
@@ -32,10 +31,9 @@ const Link = () => {
     document.body.removeChild(anchor);
   };
 
-  const { id } = useParams();
-  const { user } = UrlState();
   const navigate = useNavigate();
-
+  const { user } = UrlState();
+  const { id } = useParams();
   const {
     loading,
     data: url,
@@ -53,7 +51,6 @@ const Link = () => {
 
   useEffect(() => {
     fn();
-    fnStats();
   }, []);
 
   useEffect(() => {
@@ -76,15 +73,15 @@ const Link = () => {
       )}
       <div className="flex flex-col gap-8 sm:flex-row justify-between">
         <div className="flex flex-col items-start gap-8 rounded-lg sm:w-2/5">
-          <span className=" text-6xl font-extrabold hover:underline cursor-pointer">
+          <span className="text-6xl font-extrabold hover:underline cursor-pointer">
             {url?.title}
           </span>
           <a
-            href={`https://trimrr.in/${link}`}
+            href={`https://trimlly.in/${link}`}
             target="_blank"
             className="text-3xl sm:text-4xl text-blue-400 font-bold hover:underline cursor-pointer"
           >
-            https://trimrr.in/{link}
+            https://trimlly.in/{link}
           </a>
           <a
             href={url?.original_url}
@@ -101,7 +98,7 @@ const Link = () => {
             <Button
               variant="ghost"
               onClick={() =>
-                navigator.clipboard.writeText(`https://trimrr.in/${url?.short_url}`)
+                navigator.clipboard.writeText(`https://trimlly.in/${link}`)
               }
             >
               <Copy />
@@ -111,9 +108,18 @@ const Link = () => {
             </Button>
             <Button
               variant="ghost"
-              onClick={() => fnDelete()}
+              onClick={() =>
+                fnDelete().then(() => {
+                  navigate("/dashboard");
+                })
+              }
+              disable={loadingDelete}
             >
-              {loadingDelete ? <BeatLoader size={5} color="white" /> : <Trash />}
+              {loadingDelete ? (
+                <BeatLoader size={5} color="white" />
+              ) : (
+                <Trash />
+              )}
             </Button>
           </div>
           <img
@@ -141,7 +147,7 @@ const Link = () => {
               <CardTitle>Location Data</CardTitle>
               <Location stats={stats} />
               <CardTitle>Device Info</CardTitle>
-              <Device stats={stats} />
+              <DeviceStats stats={stats} />
             </CardContent>
           ) : (
             <CardContent>
@@ -151,12 +157,9 @@ const Link = () => {
             </CardContent>
           )}
         </Card>
-
       </div>
     </>
   );
 };
 
-export default Link;
-
-
+export default LinkPage;

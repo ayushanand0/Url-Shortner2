@@ -19,8 +19,8 @@ const Header = () => {
         <>
             <nav className="py-4 flex justify-between item-center">
                 <Link to='/' className='flex items-center'>
-                    <img src='/logo.png' className='h-16' alt='Trim.ly logo' />
-                    <span className='ml-2 text-xl font-semibold'>Trim.ly</span>
+                    <img src='/logo.png' className='h-16' alt='Trimlly logo' />
+                    <span className='ml-2 text-xl font-semibold'>Trimlly</span>
                 </Link>
 
                 <div>
